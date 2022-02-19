@@ -1,71 +1,52 @@
-import React, { useState ,useEffect} from 'react';
-import SquareComponent from "./SquareComponent";
-
-const initialState = ["", "", "", "", "", "", "", "", "", ""];
+import './App.css';
+import React,{useState} from 'react';
 
 function App() {
-    const [gameState, updateGameState] = useState(initialState);
-    const [isXChance, updateIsXChance] = useState(false);
+  const[result,setResult]=useState("");
+  //handleclick
+  function handleclick(e){
+    //console.log(e.target?.name)
+    setResult(result.concat(e.target?.name))
+  }
+function clear(){
+  setResult("");
+}
+ function back(){
+   setResult(result?.slice(0,-1));
+ }
+ function Calculator(){
+   try {
+     setResult(Number(eval(result).toString()).toFixed(2))
+   } catch (error) {
+      setResult('Invalid format')
+   }
+ }
+  return (
+    <div className="calc">
+      <h1 style={{textAlign:'center'}}>Calculator Using React</h1>
+     <input type="text" id="answer" placeholder='0' value={result}></input>
+     <button  className='button' onClick={clear}>C</button>
+     <button name='/'  className='button' onClick={back}>&larr;</button>
+     <button name="/"  className='button' onClick={handleclick}>&divide;</button>
+     <button name="9"  className='button' onClick={handleclick}>9</button>
+     <button name="8"  className='button' onClick={handleclick}>8</button>
+     <button name="7"  className='button' onClick={handleclick}>7</button>
+     <button name="6" className='button' onClick={handleclick}>6</button>
+     <button name="5" className='button' onClick={handleclick}>5</button>
+     <button name="4" className='button ' onClick={handleclick}>4</button>
+     <button name="3" className='button' onClick={handleclick}>3</button>
+     <button name="2" className='button' onClick={handleclick}>2</button>
+     <button name="1" className='button' onClick={handleclick}>1</button>
+     <button name="0" className='button' onClick={handleclick}>0</button>
+     <button name="+" className='button' onClick={handleclick}>+</button>
+     <button name="-" className='button' onClick={handleclick}>-</button>
+     <button name="*" className='button' onClick={handleclick}>x</button>
+     <button name="." className='button button1' onClick={handleclick}>.</button>
+     <button name="=" className='button button1' onClick={ Calculator} >=</button>
 
-    const onUserClicked = (index) => {
-        let strings = Array.from(gameState);
-        strings[index] = isXChance ? "X" : "0";
-        updateGameState(strings);
-        updateIsXChance(!isXChance);
-        
-    }
 
-    useEffect(() => {
-        let winner = checkWinner();
-        if (winner) {
-            alert(`Congratulation ${winner} won the Game !`)
-            updateGameState(initialState)
-
-        }
-    }, [gameState])
-
-    const checkWinner = () => {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
-                return gameState[a];
-            }
-        }
-        return null;
-    }
-
-    return (
-        <div className="app-header">
-            <p className="heading-text">Play Tic Tac Toe Game </p>
-            <div className=" row jc-center">
-                <SquareComponent className="b-bottom-right" state={gameState[0]} onClick={() => onUserClicked(0)} />
-                <SquareComponent className="b-bottom-right" state={gameState[1]} onClick={() =>  onUserClicked(1)} />
-                <SquareComponent className="b-bottom"  state={gameState[2]} onClick={() => onUserClicked(2)} />
-            </div>
-            <div className="row jc-center">
-                <SquareComponent className="b-bottom-right"  state={gameState[3]} onClick={() => onUserClicked(3)} />
-                <SquareComponent className="b-bottom-right" state={gameState[4]} onClick={() => onUserClicked(4)} />
-                <SquareComponent className="b-bottom" state={gameState[5]} onClick={() => onUserClicked(5)} />
-            </div>
-            <div className="row jc-center">
-                <SquareComponent className="b-right" state={gameState[6]} onClick={() => onUserClicked(6)} />
-                <SquareComponent className="b-right" state={gameState[7]} onClick={() => onUserClicked(7)} />
-                <SquareComponent state={gameState[8]} onClick={() => onUserClicked(8)} />
-            </div>
-            <button className="clear-button" onClick={ ()=> updateGameState(initialState) }>Clear Game</button>
-        </div>
-    );
+    </div>
+  );
 }
 
 export default App;
